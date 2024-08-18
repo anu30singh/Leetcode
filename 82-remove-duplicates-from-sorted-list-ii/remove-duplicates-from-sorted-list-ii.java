@@ -10,39 +10,35 @@
  */
 class Solution {
     public ListNode deleteDuplicates(ListNode head) {
-         if (head == null) return null;
+          if (head == null) return null;
 
-        HashSet<Integer> seen = new HashSet<>();
         HashSet<Integer> duplicates = new HashSet<>();
-
         ListNode current = head;
 
-        // First pass: Identify duplicates
-        while (current != null) {
-            if (seen.contains(current.val)) {
+        
+        while (current != null && current.next != null) {
+            if (current.val == current.next.val) {
                 duplicates.add(current.val);
-            } else {
-                seen.add(current.val);
             }
             current = current.next;
         }
 
-        // Second pass: Remove duplicates
-        ListNode dummy = new ListNode(0); // Dummy node to handle edge cases
+    
+        ListNode dummy = new ListNode(0); 
         ListNode newCurrent = dummy;
-
         current = head;
+
         while (current != null) {
-            if (!duplicates.contains(current.val)) {
+            if (!duplicates.contains(current.val) &&
+                (current.next == null || current.val != current.next.val)) {
                 newCurrent.next = current;
                 newCurrent = newCurrent.next;
             }
             current = current.next;
         }
 
-        newCurrent.next = null; // Ensure the last node's next is null
+        newCurrent.next = null;
 
         return dummy.next;
-    
     }
 }
